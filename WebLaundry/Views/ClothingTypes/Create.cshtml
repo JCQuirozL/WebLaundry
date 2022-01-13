@@ -1,0 +1,89 @@
+﻿@model WebLaundry.Models.ClothingType
+
+@{
+    ViewData["Title"] = "Lista de Tipos de Prenda";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row" style="width:100%; padding-top:2rem;">
+            <div class="col-6">
+                <h1>@ViewData["Title"]</h1>
+            </div>
+           <div class="col-4 ">
+                <button type="button" onclick=limpiar() class="btn btn-dark form-control" data-bs-toggle="modal" 
+                data-bs-target="#myModal">Agregar nuevo Tipo</button>
+            </div>
+         </div>
+
+     @*PINTAR LA TABLA CON DATATABLE DE JS DEL LISTADO DE CLIENTES*@
+     <div class="p-4 border rounded bg-light">
+         <table id="tblData"  class="table table-responsive-xl" style="width:95%;">
+             <thead class="thead-dark">
+                 <tr class="table-info">
+                     @*<th>Id</th>*@
+                     <th>Nombre</th>
+                     <th>Acciones</th>
+                 </tr>
+             </thead>
+
+         </table>
+
+     </div>
+
+     @*FORMULARIO MODAL PARA LA CAPTURA Y EDICIÓN*@
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h2 class="modal-title text-primary text-center">Ingresar Datos</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div style="padding-left:15%; padding-right:15%; padding-bottom:30px;">
+                            <div class="row p-3 border-0">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            </div>
+
+
+                            @*CAMPOS A CAPTURAR O EDITAR*@
+                                <input type="hidden" id="clothingtypeid" asp-for="ClothingTypeId" />
+                                <div class="form-row" style="padding-top:14px;">
+                                    <div class="form-group col-md-6">
+                                   
+                                        <label>Nombre</label>
+                                        <input asp-for="Name" id="nameid" class="form-control" placeholder="Nombre" />
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                        
+                                        
+                                    </div>
+                                </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" >Cancelar</button>
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+    </div>
+
+</div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/clothingtype.js"></script>
+}
