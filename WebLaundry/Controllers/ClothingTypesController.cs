@@ -1,15 +1,16 @@
 ﻿#nullable disable
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebLaundry.Data;
 using WebLaundry.Models;
 
 namespace WebLaundry.Controllers
 {
     public class ClothingTypesController : Controller
     {
-        private readonly LaundryContext _context;
+        private readonly laundryContext _context;
 
-        public ClothingTypesController(LaundryContext context)
+        public ClothingTypesController(laundryContext context)
         {
             _context = context;
         }
@@ -23,7 +24,8 @@ namespace WebLaundry.Controllers
                              select new
                              {
                                  clothingtypeid = ClothingType.ClothingTypeId,
-                                 name = ClothingType.Name
+                                 name = ClothingType.Name,
+                                 price = ClothingType.Price
                              }).ToListAsync();
 
             return Json(new { data = lst });
@@ -89,7 +91,7 @@ namespace WebLaundry.Controllers
 
             _context.ClothingTypes.Remove(clothingType);
             await _context.SaveChangesAsync();
-            return Json(new { success = true, message = "Cliente borrado con éxito" });
+            return Json(new { success = true, message = "Tipo de prenda borrado con éxito" });
         }
 
 

@@ -13,25 +13,22 @@ namespace WebLaundry.Models
 
         public long CustomerId { get; set; }
 
-        [Required(ErrorMessage ="Debes capturar al menos un apellido para el cliente.")]
-        [Display(Name = "Apellidos")]
+        [Required(ErrorMessage ="El apellido es requerido")]
         public string? Lastname { get; set; }
-        
-        
-        [Required(ErrorMessage = "Debes capturar al menos un nombre para el cliente.")]
-        [Display(Name = "Nombre")]
+
+
+        [Required(ErrorMessage = "El nombre es requerido")]
         public string? Name { get; set; }
 
-        [Required(ErrorMessage = "Debes capturar el domicilio para el cliente.")]
-        [Display(Name = "Domicilio")]
+        [Required(ErrorMessage = "El domicilio es requerido")]
         public string? Address { get; set; }
 
-        [Required(ErrorMessage = "Debes capturar el número de teléfono para el cliente.")]
-        [Display(Name = "Teléfono")]
+
+        [Required(ErrorMessage = "El teléfono es requerido")]
         public string? Phone { get; set; }
 
-        [Required(ErrorMessage = "Debes capturar el correo para el cliente.")]
-        [Display(Name = "Correo")]
+
+
         public string? Email { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }

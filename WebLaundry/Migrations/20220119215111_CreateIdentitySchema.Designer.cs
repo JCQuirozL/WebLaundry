@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WebLaundry.Models;
+using WebLaundry.Data;
 
 #nullable disable
 
 namespace WebLaundry.Migrations
 {
-    [DbContext(typeof(LaundryContext))]
-    [Migration("20220113162544_CreateIdentitySchema")]
+    [DbContext(typeof(laundryContext))]
+    [Migration("20220119215111_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -169,10 +169,12 @@ namespace WebLaundry.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -209,10 +211,12 @@ namespace WebLaundry.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -236,6 +240,10 @@ namespace WebLaundry.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)")
                         .HasColumnName("name");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(16,2)")
+                        .HasColumnName("price");
 
                     b.HasKey("ClothingTypeId");
 
@@ -301,6 +309,9 @@ namespace WebLaundry.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("annotations");
 
+                    b.Property<int?>("ClothingId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("CreateDate")
                         .HasColumnType("date")
                         .HasColumnName("create_date");
@@ -313,13 +324,12 @@ namespace WebLaundry.Migrations
                         .HasColumnType("decimal(16,2)")
                         .HasColumnName("iva");
 
-                    b.Property<long?>("OrderDetailId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("order_detail_id");
-
                     b.Property<DateTime?>("PayDate")
                         .HasColumnType("date")
                         .HasColumnName("pay_date");
+
+                    b.Property<decimal?>("Quantity")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("StatusChangeDate")
                         .HasColumnType("date")
@@ -345,8 +355,6 @@ namespace WebLaundry.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("OrderDetailId");
-
                     b.HasIndex("StatusId");
 
                     b.ToTable("ORDERS", (string)null);
@@ -365,13 +373,13 @@ namespace WebLaundry.Migrations
                         .HasColumnType("int")
                         .HasColumnName("clothing_type_id");
 
+                    b.Property<long?>("OrderId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("order_id");
+
                     b.Property<decimal?>("Quantity")
                         .HasColumnType("decimal(16,2)")
                         .HasColumnName("quantity");
-
-                    b.Property<int?>("ServiceId")
-                        .HasColumnType("int")
-                        .HasColumnName("service_id");
 
                     b.Property<decimal?>("Total")
                         .HasColumnType("decimal(16,2)")
@@ -381,7 +389,7 @@ namespace WebLaundry.Migrations
 
                     b.HasIndex("ClothingTypeId");
 
-                    b.HasIndex("ServiceId");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("ORDER_DETAIL", (string)null);
                 });
@@ -404,30 +412,6 @@ namespace WebLaundry.Migrations
                     b.HasKey("StatusId");
 
                     b.ToTable("ORDER_STATUS", (string)null);
-                });
-
-            modelBuilder.Entity("WebLaundry.Models.ServiceType", b =>
-                {
-                    b.Property<int>("ServiceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("service_id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ServiceId"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("name");
-
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("decimal(16,2)")
-                        .HasColumnName("price");
-
-                    b.HasKey("ServiceId");
-
-                    b.ToTable("SERVICE_TYPE", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -488,20 +472,12 @@ namespace WebLaundry.Migrations
                         .HasForeignKey("CustomerId")
                         .HasConstraintName("FK_ORDERS_CUSTOMER");
 
-                    b.HasOne("WebLaundry.Models.OrderDetail", "OrderDetail")
-                        .WithMany("Orders")
-                        .HasForeignKey("OrderDetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("FK_ORDERS_ORDER_DETAIL");
-
                     b.HasOne("WebLaundry.Models.OrderStatus", "Status")
                         .WithMany("Orders")
                         .HasForeignKey("StatusId")
                         .HasConstraintName("FK_ORDERS_ORDER_STATUS");
 
                     b.Navigation("Customer");
-
-                    b.Navigation("OrderDetail");
 
                     b.Navigation("Status");
                 });
@@ -513,14 +489,15 @@ namespace WebLaundry.Migrations
                         .HasForeignKey("ClothingTypeId")
                         .HasConstraintName("FK_ORDER_DETAIL_CLOTHING_TYPE");
 
-                    b.HasOne("WebLaundry.Models.ServiceType", "Service")
+                    b.HasOne("WebLaundry.Models.Order", "Order")
                         .WithMany("OrderDetails")
-                        .HasForeignKey("ServiceId")
-                        .HasConstraintName("FK_ORDER_DETAIL_SERVICE_TYPE");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("FK_ORDER_DETAIL_ORDERS");
 
                     b.Navigation("ClothingType");
 
-                    b.Navigation("Service");
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("WebLaundry.Models.ClothingType", b =>
@@ -533,19 +510,14 @@ namespace WebLaundry.Migrations
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("WebLaundry.Models.OrderDetail", b =>
+            modelBuilder.Entity("WebLaundry.Models.Order", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("WebLaundry.Models.OrderStatus", b =>
                 {
                     b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("WebLaundry.Models.ServiceType", b =>
-                {
-                    b.Navigation("OrderDetails");
                 });
 #pragma warning restore 612, 618
         }

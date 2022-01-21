@@ -1,0 +1,75 @@
+﻿@model WebLaundry.Models.Order
+
+@{
+	ViewBag.Title = "Nueva Orden";
+}
+
+<div class="content-wrapper">
+	<div class="content-header">
+		  <div class="container-fluid">
+			<div class="row mb-2">
+			  <div class="col-sm-6 ">
+					<h2>@ViewBag.Title</h2>
+			  </div>
+			</div>
+		  </div>
+	</div>
+
+	
+		 <div class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="form-group col-lg-3">
+						@using (Html.BeginForm("Create","Orders", FormMethod.Get))
+						{
+							<input  disabled id="createdateid"  value="@DateTime.Now.ToShortDateString()" /><br /><br />
+					
+							<label>Cliente</label>
+							@Html.DropDownListFor(m => m.CustomerId, new SelectList(ViewBag.Customers, "CustomerId","Name",3), "Seleccionar", new {@class="form-control", @id="customerid"})
+							<span asp-validation-for="CustomerId" class="text-danger"></span><br />
+
+							<label>Estatus</label>
+							@Html.DropDownListFor(m => m.StatusId, new SelectList(ViewBag.Status, "id","name",1), "Seleccionar", new { @class="form-control", @id="statusid", @disabled="disabled"})
+							<span asp-validation-for="StatusId" class="text-danger"></span><br />
+
+							<label>Observaciones</label>
+							<input asp-for="Annotations" id="annotationsid" class="form-control" placeholder="Observaciones" />
+						   <span asp-validation-for="Annotations" class="text-danger"></span><br />
+					
+					<div class="container">
+						 
+							 <div class="form-inline ">
+									<div class="form-group">
+											
+																				
+											<label>Tipo de Prenda:</label>
+													<div  style="padding:1rem;" class="input-group">								
+														@Html.DropDownListFor(m => m.ClothingId, new SelectList(ViewBag.ClothingType, "id","name",1), "Seleccionar", new { @class="form-control", @id="clothingid"})
+														<span asp-validation-for="ClothingId" class="text-danger"></span><br />
+													</div>
+											
+											<label>Cantidad:</label>
+												<div style="padding:1rem;" class="input-group">								
+														<input asp-for="Quantity" class="form-control" placeholder="Kg.">
+														<span asp-validation-for="Quantity" class="text-danger" ></span><br />
+												</div>
+									</div>
+							</div>
+												
+									
+							</div>
+					
+					
+						
+						
+						
+					
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+
+	
+</div>	
+		

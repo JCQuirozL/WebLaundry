@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using WebLaundry.Models;
 
-namespace WebLaundry.Models
+namespace WebLaundry.Data
 {
-    public partial class LaundryContext : IdentityDbContext
+    public partial class laundryContext : IdentityDbContext
     {
-        public LaundryContext()
+        public laundryContext()
         {
         }
 
-        public LaundryContext(DbContextOptions<LaundryContext> options)
+        public laundryContext(DbContextOptions<laundryContext> options)
             : base(options)
         {
         }
@@ -22,21 +23,19 @@ namespace WebLaundry.Models
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
         public virtual DbSet<OrderStatus> OrderStatuses { get; set; } = null!;
-        public virtual DbSet<ServiceType> ServiceTypes { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=192.168.1.95;User Id=CXP;Password=20033029Jcq$;Database=Laundry");
+                optionsBuilder.UseSqlServer("server=T1\\SQLEXPRESS;database=laundry;user id=cxp;password=20033029Jcq$");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
             modelBuilder.Entity<ClothingType>(entity =>
             {
                 entity.ToTable("CLOTHING_TYPE");
@@ -47,6 +46,10 @@ namespace WebLaundry.Models
                     .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("name");
+
+                entity.Property(e => e.Price)
+                    .HasColumnType("decimal(16, 2)")
+                    .HasColumnName("price");
             });
 
             modelBuilder.Entity<Customer>(entity =>
@@ -102,8 +105,6 @@ namespace WebLaundry.Models
                     .HasColumnType("decimal(16, 2)")
                     .HasColumnName("iva");
 
-                entity.Property(e => e.OrderDetailId).HasColumnName("order_detail_id");
-
                 entity.Property(e => e.PayDate)
                     .HasColumnType("date")
                     .HasColumnName("pay_date");
@@ -129,12 +130,6 @@ namespace WebLaundry.Models
                     .HasForeignKey(d => d.CustomerId)
                     .HasConstraintName("FK_ORDERS_CUSTOMER");
 
-                entity.HasOne(d => d.OrderDetail)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.OrderDetailId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK_ORDERS_ORDER_DETAIL");
-
                 entity.HasOne(d => d.Status)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.StatusId)
@@ -149,11 +144,11 @@ namespace WebLaundry.Models
 
                 entity.Property(e => e.ClothingTypeId).HasColumnName("clothing_type_id");
 
+                entity.Property(e => e.OrderId).HasColumnName("order_id");
+
                 entity.Property(e => e.Quantity)
                     .HasColumnType("decimal(16, 2)")
                     .HasColumnName("quantity");
-
-                entity.Property(e => e.ServiceId).HasColumnName("service_id");
 
                 entity.Property(e => e.Total)
                     .HasColumnType("decimal(16, 2)")
@@ -164,10 +159,11 @@ namespace WebLaundry.Models
                     .HasForeignKey(d => d.ClothingTypeId)
                     .HasConstraintName("FK_ORDER_DETAIL_CLOTHING_TYPE");
 
-                entity.HasOne(d => d.Service)
+                entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderDetails)
-                    .HasForeignKey(d => d.ServiceId)
-                    .HasConstraintName("FK_ORDER_DETAIL_SERVICE_TYPE");
+                    .HasForeignKey(d => d.OrderId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_ORDER_DETAIL_ORDERS");
             });
 
             modelBuilder.Entity<OrderStatus>(entity =>
@@ -182,24 +178,6 @@ namespace WebLaundry.Models
                     .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("name");
-            });
-
-            modelBuilder.Entity<ServiceType>(entity =>
-            {
-                entity.HasKey(e => e.ServiceId);
-
-                entity.ToTable("SERVICE_TYPE");
-
-                entity.Property(e => e.ServiceId).HasColumnName("service_id");
-
-                entity.Property(e => e.Name)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("name");
-
-                entity.Property(e => e.Price)
-                    .HasColumnType("decimal(16, 2)")
-                    .HasColumnName("price");
             });
 
             OnModelCreatingPartial(modelBuilder);

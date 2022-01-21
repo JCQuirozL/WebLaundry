@@ -1,35 +1,35 @@
 ﻿#nullable disable
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebLaundry.Data;
 using WebLaundry.Models;
 
 namespace WebLaundry.Controllers
 {
-    public class CustomersController : Controller
+    public class OrderStatusController : Controller
     {
         private readonly laundryContext _context;
 
-        public CustomersController(laundryContext context)
+        public OrderStatusController(laundryContext context)
         {
             _context = context;
         }
 
-        //Get Customers
+        //Get OrderStatuses
         [HttpGet]
         public async Task<IActionResult> Listado()
         {
-            var db = _context.Customers;
-            var lst = await (from Customer in db 
+            var db = _context.OrderStatuses;
+            var lst = await (from OrderStatus in db
                              select new
                              {
-                                 customerid = Customer.CustomerId,
-                                 name = Customer.Name,
-                                 lastname = Customer.Lastname,
-                                 address = Customer.Address,
-                                 phone = Customer.Phone,
-                                 email = Customer.Email
-
+                                 clothingtypeid = OrderStatus.StatusId,
+                                 name = OrderStatus.Name
                              }).ToListAsync();
 
             return Json(new { data = lst });
@@ -38,70 +38,64 @@ namespace WebLaundry.Controllers
 
 
         [HttpGet]
-        // GET: CustomersController/Create
+        // GET: OrderStatusController/Create
         public async Task<ActionResult> Create(int? id)
         {
-            Customer customer = new();
+            OrderStatus orderstatus = new();
 
             if (id == null)
             {
 
-                return View(customer);
+                return View(orderstatus);
             }
             else
             {
 
-                customer = await _context.Customers.FindAsync(Convert.ToInt64(id));
-                return View(customer);
+                orderstatus = await _context.OrderStatuses.FindAsync(id);
+                return View(orderstatus);
             }
         }
 
-        // POST: cUSTOMERSController/Create
+        // POST: ClothingTypesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Customer customer)
+        public async Task<ActionResult> Create(OrderStatus orderstatus)
         {
 
             if (ModelState.IsValid)
             {
 
-                if (customer.CustomerId == 0) //Crear registro
+                if (orderstatus.StatusId == 0) //Crear registro
                 {
-                    await _context.Customers.AddAsync(customer);
+                    await _context.OrderStatuses.AddAsync(orderstatus);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Create), new { id = 0 }); //Lo añadí para que al momento de añadir uno nuevo no salte el modal del último registro
                 }
                 else
                 {
-                    _context.Customers.Update(customer);
+                    _context.OrderStatuses.Update(orderstatus);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Create), new { id = 0 });
                 }
             }
 
 
-            return View(customer);
+            return View(orderstatus);
         }
 
 
         [HttpDelete]
         public async Task<ActionResult> Delete(int id)
         {
-            var customer = await _context.Customers.FindAsync(Convert.ToInt64(id));
-            if (customer == null)
+            var orderstatus = await _context.OrderStatuses.FindAsync(id);
+            if (orderstatus == null)
             {
                 return Json(new { success = false, message = "No se pudo borrar el registro" });
             }
 
-            _context.Customers.Remove(customer);
+            _context.OrderStatuses.Remove(orderstatus);
             await _context.SaveChangesAsync();
-            return Json(new { success = true, message = "Cliente borrado con éxito" });
-        }
-
-
-        private bool CustomerExists(long id)
-        {
-            return _context.Customers.Any(e => e.CustomerId == id);
+            return Json(new { success = true, message = "Estado borrado con éxito" });
         }
     }
 }

@@ -12,11 +12,13 @@ $(document).ready(function () {
 function limpiar() {
     var id = document.getElementById("clothingtypeid");
     var name = document.getElementById("nameid");
+    var name = document.getElementById("priceid");
    
 
 
     id.value = 0;
     name.value = "";
+    price.value = 0;
    
 
 
@@ -35,9 +37,9 @@ function loadDatatable() {
         "columns": [
 
 
-            { "data": "name", "width": "60%" },
+            { "data": "name", "width": "40%" },
             
-
+            { "data": "price", "width": "20%" },
 
             {
                 "data": "clothingtypeid",
@@ -53,7 +55,7 @@ function loadDatatable() {
                         
                       </div>
                     `;
-                }, "width": "20%"
+                }, "width": "15%"
 
             }
         ]
@@ -62,7 +64,7 @@ function loadDatatable() {
 
 function Delete(url) {
     swal({
-        title: "¿Está seguro de querer borrar éste Oficio?",
+        title: "¿Está seguro de querer borrar éste registro?",
         text: "Éste registro NO se podrá recuperar",
         icon: "warning",
         buttons: true

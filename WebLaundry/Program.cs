@@ -11,12 +11,12 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddRazorPages()
         .AddRazorRuntimeCompilation();
 
-builder.Services.AddDbContext<LaundryContext>(options =>
+builder.Services.AddDbContext<laundryContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<LaundryContext>();
+    .AddEntityFrameworkStores<laundryContext>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

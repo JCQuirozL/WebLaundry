@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebLaundry.Models
 {
@@ -13,9 +14,13 @@ namespace WebLaundry.Models
 
         public int ClothingTypeId { get; set; }
 
-        [Required(ErrorMessage ="Escribe un tipo de prenda.")]
-        [Display(Name = "Tipo de Servicio")]
+        [Required(ErrorMessage ="El nombre es requerido")]
         public string? Name { get; set; }
+
+
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? Price { get; set; }
 
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }

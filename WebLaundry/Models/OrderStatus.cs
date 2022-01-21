@@ -13,7 +13,8 @@ namespace WebLaundry.Models
 
         public int StatusId { get; set; }
 
-        [Required(ErrorMessage = "Captura el nombre del estado.")]
+
+        [Required(ErrorMessage = "El nombre es requerido")]
         public string? Name { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }

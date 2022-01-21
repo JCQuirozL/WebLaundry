@@ -1,7 +1,7 @@
-﻿@model WebLaundry.Models.ClothingType
+﻿@model WebLaundry.Models.OrderStatus
 
 @{
-    ViewData["Title"] = "Lista de Tipos de Prenda";
+    ViewData["Title"] = "Lista de Estados de Ordenes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -14,7 +14,7 @@
             </div>
            <div class="col-4 ">
                 <button type="button" onclick=limpiar() class="btn btn-dark form-control" data-bs-toggle="modal" 
-                data-bs-target="#myModal">Agregar nuevo Tipo</button>
+                data-bs-target="#myModal">Agregar nuevo Estado</button>
             </div>
          </div>
 
@@ -25,7 +25,6 @@
                  <tr class="table-info">
                      @*<th>Id</th>*@
                      <th>Nombre</th>
-                     <th>Precio/Kg.</th>
                      <th>Acciones</th>
                  </tr>
              </thead>
@@ -52,17 +51,13 @@
 
 
                             @*CAMPOS A CAPTURAR O EDITAR*@
-                                <input type="hidden" id="clothingtypeid" asp-for="ClothingTypeId" />
+                                <input type="hidden" id="statusid" asp-for="StatusId" />
                                 <div class="form-row" style="padding-top:14px;">
                                     <div class="form-group col-md-6">
                                    
                                         <label>Nombre</label>
                                         <input asp-for="Name" id="nameid" class="form-control" placeholder="Nombre" />
                                         <span asp-validation-for="Name" class="text-danger"></span>
-
-                                        <label>Precio/Kg.</label>
-                                        <input asp-for="Price" id="priceid" class="form-control" placeholder="Precio" />
-                                        <span asp-validation-for="Price" class="text-danger"></span>
                                         
                                         
                                     </div>
@@ -90,5 +85,5 @@
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
-    <script src="~/js/clothingtype.js"></script>
+    <script src="~/js/orderstatus.js"></script>
 }

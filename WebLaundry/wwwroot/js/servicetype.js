@@ -3,26 +3,23 @@
 $(document).ready(function () {
 
     loadDatatable();
-    var id = document.getElementById("customerid");
+    var id = document.getElementById("typeid");
     if (id.value > 0) {
         $('#myModal').modal('show');
     }
 });
 
 function limpiar() {
-    var id= document.getElementById("customerid");
+    var id = document.getElementById("typeid");
     var name = document.getElementById("nameid");
-    var lastname = document.getElementById("lastnameid");
-    var address = document.getElementById("addressid");
-    var email = document.getElementById("emailid");
-   
+    var price = document.getElementById("priceid");
+
 
     id.value = 0;
     name.value = "";
-    lastname.value = "";
-    address.value = "";
-    email.value = "";
-    
+    price.value = 0;
+
+
 
 }
 
@@ -34,28 +31,24 @@ function loadDatatable() {
             "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"
         },
 
-        "ajax": { "url": "/Customers/Listado" },
+        "ajax": { "url": "/ServiceTypes/Listado" },
 
         "columns": [
 
 
-            { "data": "name", "width": "20%" },
-            { "data": "lastname", "width": "20%" },
+            { "data": "name", "width": "30%" },
 
-            { "data": "address", "width": "10%" },
-            { "data": "phone", "width": "10%" },
-            { "data": "email", "width": "15%" },
-            
+            { "data": "price", "width": "30%" },
 
             {
-                "data": "customerid",
+                "data": "typeid",
                 "render": function (data) {
                     return `
                       <div>
-                        <a href="/Customers/Create/${data}" class="btn btn-warning" style="cursor:pointer;">
+                        <a href="/ServiceTypes/Create/${data}" class="btn btn-warning" style="cursor:pointer;">
                             Editar
                         </a>
-                        <a onclick=Delete("/Customers/Delete/${data}") class="btn btn-outline-danger " style="cursor:pointer;">
+                        <a onclick=Delete("/ServiceTypes/Delete/${data}") class="btn btn-outline-danger " style="cursor:pointer;">
                             Borrar
                         </a>
                         
