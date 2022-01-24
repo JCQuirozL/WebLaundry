@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebLaundry.Models
 {
@@ -22,6 +24,9 @@ namespace WebLaundry.Models
         public long? CustomerId { get; set; }
         public int? UserId { get; set; }
 
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? Price { get; set; }
         public int? ClothingId { get; set; }
 
         public decimal? Quantity { get; set; }

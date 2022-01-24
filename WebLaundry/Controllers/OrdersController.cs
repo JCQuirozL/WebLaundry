@@ -28,7 +28,7 @@ namespace WebLaundry.Controllers
             
             ViewBag.Status = _context.OrderStatuses.Select(s => new { id = s.StatusId, name = s.Name }).ToList();
 
-            ViewBag.ClothingType = _context.ClothingTypes.Select(c => new {id = c.ClothingTypeId, name = c.Name}).ToList();
+            ViewBag.ClothingType = _context.ClothingTypes.Select(c => new {id = c.ClothingTypeId, name = c.Name, price = c.Price }).ToList();
 
             
 

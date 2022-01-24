@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebLaundry.Data;
 
@@ -11,9 +12,10 @@ using WebLaundry.Data;
 namespace WebLaundry.Migrations
 {
     [DbContext(typeof(laundryContext))]
-    partial class laundryContextModelSnapshot : ModelSnapshot
+    [Migration("20220124212522_ServiceTypes")]
+    partial class ServiceTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

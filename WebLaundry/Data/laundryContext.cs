@@ -19,6 +19,8 @@ namespace WebLaundry.Data
         }
 
         public virtual DbSet<ClothingType> ClothingTypes { get; set; } = null!;
+
+        public virtual DbSet<ServiceType> ServiceTypes { get; set; } = null!;
         public virtual DbSet<Customer> Customers { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;

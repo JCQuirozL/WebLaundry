@@ -1,0 +1,89 @@
+﻿@model WebLaundry.Models.Order
+@{
+	ViewBag.Title = "Capturar nueva órden";
+}
+
+<h2>@ViewBag.Title</h2>
+	<div class="container">
+		<div class="master">
+			<h2>Órden</h2>
+			<table class="table table-responsive">
+				<tr>
+					<td>Orden No.</td>
+					<td>
+						<input asp-for=OrderId id="orderNo" class="form-control" readonly />
+						<span class="error">Número de Órden requerido</span>
+					</td>
+					<td>Fecha de creación</td>
+					<td>
+						<input  disabled id="orderDate" value="@DateTime.Now.ToShortDateString()" class="form-control" />
+						<span class="error">Fecha requerida</span>
+					</td>
+				</tr>
+				<tr>
+					<td>Observaciones</td>
+					<td colspan="3">
+						<textarea asp-for="Annotations" id="description" class="form-control"></textarea>
+					</td>	
+				</tr>
+			</table>
+		<coloriv class="details">
+			<h2>Servicios agregados</h2>
+			<table class="table table-responsive">
+				<tr>
+					<td>Tipo de Servicio</td>
+					<td>Tipo de Prenda</td>
+					<td>Precio</td>
+					<td>Cantidad</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr class="mycontainer" id="mainrow">
+					<td>
+						<select id="servicetype" class="st form-control" onchange="LoadService(this)">
+							<option>Seleccione...</option>
+						</select>
+						<span class="error">Seleccione un tipo de servicio</span>
+					</td>
+					<td>
+						<select id="clothingtype" class="clothingtype form-control">
+							<option>Seleccione...</option>
+						</select>
+						<span class="error">Seleccione un tipo de prenda</span>
+					</td>
+					<td>
+						<input type="text" id="price" class="price form-control" readonly />
+						<span class="error">El precio es requerido</span>
+					</td>
+					<td>
+						<input type="text" id="quantity" class="quantity form-control"/>
+						<span class="error">La cantidad es requerida</span>
+					</td>
+					<td>
+						<input type="button" id="add" value="Agregar" style="width:80px;" class="btn btn-success" />
+					</td>
+
+				</tr>
+			</table>
+			<div id="orderitems">
+				<table class="table table-responsive" id="orderdetailsItems"></table>
+				<span class="orderItemError" style="color:red;"></span>
+			</div>
+			<div style="padding:10px 0; text-align:right;">
+				<input id="submit" type="button" value="Guardar órden" class="btn btn-warning" style="padding:10px 20px;" />
+			</div>
+
+		</div>	
+	</div>
+
+	<style>
+		span.error{
+			display:block;
+			visibility:hidden;
+			color:red;
+			font-size:90%;
+		}
+		tr.error{
+			background-color:rgba(255,0,0,0.35);
+		}
+	</style>
+	
