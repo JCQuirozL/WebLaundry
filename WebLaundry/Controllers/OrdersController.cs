@@ -45,11 +45,11 @@ namespace WebLaundry.Controllers
 
         public async Task<ActionResult> getPrices(int clothingType)
         {
-            var precio = (from ClothingType in _context.ClothingTypes
+            var precio = (from ClothingType in _context.ClothingTypes where ClothingType.ServiceTypeId == clothingType
                           select new
                           {
-
-                           });
+                              price = ClothingType.Price
+                           }).ToString();
             return Json(new { data = precio }, new JsonSerializerSettings());
         }
 
