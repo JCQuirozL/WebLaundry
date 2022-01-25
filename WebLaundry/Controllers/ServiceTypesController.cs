@@ -25,6 +25,7 @@ namespace WebLaundry.Controllers
                              {
                                  typeid = ServiceType.ServiceTypeId,
                                  name = ServiceType.Name,
+                                 
                                
                              }).ToListAsync();
 

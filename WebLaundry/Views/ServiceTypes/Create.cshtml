@@ -1,7 +1,7 @@
-﻿@model WebLaundry.Models.ClothingType
+﻿@model WebLaundry.Models.ServiceType
 
 @{
-    ViewData["Title"] = "Lista de Tipos de Prenda";
+    ViewData["Title"] = "Lista de Tipos de Servicio";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -18,15 +18,13 @@
             </div>
          </div>
 
-     @*PINTAR LA TABLA CON DATATABLE DE JS DEL LISTADO DE CLIENTES*@
+     @*PINTAR LA TABLA CON DATATABLE DE JS DEL LISTADO DE tipos*@
      <div class="p-4 border rounded bg-light">
          <table id="tblData"  class="table table-responsive-xl" style="width:95%;">
              <thead class="thead-dark">
                  <tr class="table-info">
                      @*<th>Id</th>*@
                      <th>Nombre</th>
-                     <th>Precio/Kg.</th>
-                     <th>Categoría</th>
                      <th>Acciones</th>
                  </tr>
              </thead>
@@ -53,21 +51,15 @@
 
 
                             @*CAMPOS A CAPTURAR O EDITAR*@
-                                <input type="hidden" id="clothingtypeid" asp-for="ClothingTypeId" />
+                                <input type="hidden" id="typeid" asp-for="ServiceTypeId" />
                                 <div class="form-row" style="padding-top:14px;">
                                     <div class="form-group col-md-6">
                                    
                                         <label>Nombre</label>
                                         <input asp-for="Name" id="nameid" class="form-control" placeholder="Nombre" />
-                                        <span asp-validation-for="Name" class="text-danger"></span> <br/>
-
-                                        <label>Precio/Kg.</label>
-                                        <input asp-for="Price" id="priceid" class="form-control" placeholder="Precio" />
-                                        <span asp-validation-for="Price" class="text-danger"></span><br/>
+                                        <span asp-validation-for="Name" class="text-danger"></span>
                                         
-                                        <label>Tipo de Servicio</label>
-                                        @Html.DropDownListFor(m=>m.ServiceTypeId, new SelectList(ViewBag.ServiceTypes, "id", "name"), "Seleccione...", new { @class="form-control", @id="serviceid"})
-                                        <span asp-validation-for="ServiceTypeId" class="text-danger"></span><br/>
+                                       
                                     </div>
                                 </div>
 
@@ -93,5 +85,5 @@
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
-    <script src="~/js/clothingtype.js"></script>
+    <script src="~/js/servicetype.js"></script>
 }

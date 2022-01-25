@@ -12,14 +12,12 @@ $(document).ready(function () {
 function limpiar() {
     var id = document.getElementById("typeid");
     var name = document.getElementById("nameid");
-    var price = document.getElementById("priceid");
+   
 
 
     id.value = 0;
     name.value = "";
-    price.value = 0;
-
-
+    
 
 }
 
@@ -38,8 +36,7 @@ function loadDatatable() {
 
             { "data": "name", "width": "30%" },
 
-            { "data": "price", "width": "30%" },
-
+           
             {
                 "data": "typeid",
                 "render": function (data) {

@@ -19,13 +19,16 @@ namespace WebLaundry.Controllers
         [HttpGet]
         public async Task<IActionResult> Listado()
         {
-            var db = _context.ClothingTypes;
-            var lst = await (from ClothingType in db
+            
+            var lst = await (from ClothingType in _context.ClothingTypes 
+                             join ServiceType in _context.ServiceTypes on ClothingType.ServiceTypeId equals ServiceType.ServiceTypeId
                              select new
                              {
                                  clothingtypeid = ClothingType.ClothingTypeId,
                                  name = ClothingType.Name,
-                                 price = ClothingType.Price
+                                 price = ClothingType.Price,
+                                 servicetype = ServiceType.Name
+
                              }).ToListAsync();
 
             return Json(new { data = lst });
@@ -38,6 +41,8 @@ namespace WebLaundry.Controllers
         public async Task<ActionResult> Create(int? id)
         {
             ClothingType clothingType = new();
+
+            ViewBag.ServiceTypes = _context.ServiceTypes.Select(st=>new { id = st.ServiceTypeId, name = st.Name }).ToList();
 
             if (id == null)
             {

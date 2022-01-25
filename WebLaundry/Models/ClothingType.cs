@@ -18,9 +18,14 @@ namespace WebLaundry.Models
         public string? Name { get; set; }
 
 
+        [Required(ErrorMessage = "El precio es requerido")]
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18, 2)")]
         public decimal? Price { get; set; }
+
+
+        [Required(ErrorMessage = "El tipo de servicio es requerido")]
+        public int? ServiceTypeId { get; set; }
 
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }

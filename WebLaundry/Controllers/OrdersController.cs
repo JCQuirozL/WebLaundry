@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using WebLaundry.Data;
 using WebLaundry.Models;
+
 
 namespace WebLaundry.Controllers
 {
@@ -17,6 +20,39 @@ namespace WebLaundry.Controllers
             
             return View();
         }
+
+        public async Task <ActionResult> getServiceTypes()
+        {
+            List<ServiceType> serviceTypes = new  List<ServiceType>();
+
+            serviceTypes = await _context.ServiceTypes.OrderBy(a => a.Name).ToListAsync();
+
+            return   Json (new { data = serviceTypes }, new JsonSerializerSettings() );
+        }
+        
+        public async Task<ActionResult> getClothingTypes(int serviceTypeId)
+        {
+            List<ClothingType> clothingTypes = new List<ClothingType>();
+
+            clothingTypes = await _context.ClothingTypes.Where(a => a.ServiceTypeId.Equals(serviceTypeId)).OrderBy(a => a.Name).ToListAsync();
+
+
+            return Json(new { data = clothingTypes }, new JsonSerializerSettings());
+
+
+        }
+
+
+        public async Task<ActionResult> getPrices(int clothingType)
+        {
+            var precio = (from ClothingType in _context.ClothingTypes
+                          select new
+                          {
+
+                           });
+            return Json(new { data = precio }, new JsonSerializerSettings());
+        }
+
 
 
         [HttpGet]

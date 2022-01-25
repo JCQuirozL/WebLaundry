@@ -45,7 +45,7 @@
 						<span class="error">Seleccione un tipo de servicio</span>
 					</td>
 					<td>
-						<select id="clothingtype" class="clothingtype form-control">
+						<select id="clothingtype" class="clothingtype form-control" onchange="LoadPrice(this)">
 							<option>Seleccione...</option>
 						</select>
 						<span class="error">Seleccione un tipo de prenda</span>
@@ -74,7 +74,8 @@
 
 		</div>	
 	</div>
-
+	
+	<script src="~/js~/js/site.js"></script>
 	<style>
 		span.error{
 			display:block;

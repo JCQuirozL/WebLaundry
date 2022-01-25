@@ -41,6 +41,8 @@ function loadDatatable() {
             
             { "data": "price", "width": "20%" },
 
+            { "data": "servicetype", "width": "20%" },
+
             {
                 "data": "clothingtypeid",
                 "render": function (data) {
@@ -55,7 +57,7 @@ function loadDatatable() {
                         
                       </div>
                     `;
-                }, "width": "15%"
+                }, "width": "20%"
 
             }
         ]
