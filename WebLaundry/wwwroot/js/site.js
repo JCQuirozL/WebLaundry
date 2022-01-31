@@ -4,6 +4,7 @@ $(document).ready(function () {
     //Retrieve Clothing Types
     $('#ServiceId').change(function () {
         $('#ClothingId').empty();
+        $('#quantity').empty();
         $.ajax({
             type: 'POST',
             url: '/Orders/GetClothingTypesAsync',
@@ -51,6 +52,19 @@ $(document).ready(function () {
 
     })
 
+    //Calculate Subtotal
+    $('#quantity').change(function () {
+        subtotal = ($('#price').val() * $('#quantity').val()) / $('#iva').val();
+        $('#subtotal').val(parseFloat(subtotal.toFixed(2)));
+        console.log(subtotal);
+    });
+
+    //Calculate Total
+    $('#quantity').change(function () {
+        var total = ($('#subtotal').val() * $('#iva').val());
+        $('#total').val(parseFloat(total.toFixed(1)));
+        console.log(total);
+    });
 
 
     //Add button click event
