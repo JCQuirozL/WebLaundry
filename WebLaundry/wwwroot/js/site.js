@@ -1,76 +1,58 @@
-﻿var ServiceTypes = [];
-
-//fetch service types from database
-function LoadService(element){
-    if (ServiceTypes.length == 0) {
-        //ajax function to fetch data
-        $.ajax({
-            type: "GET",
-            url: '/Orders/getServiceTypes',
-            success: function (data) {
-                ServiceTypes = data;
-                //render servic types
-                renderServiceTypes(element);
-            }
-        })
-    }
-    else
-    { //render service types to the element (the <select> html in this case)
-        renderServiceTypes(element);
-    }
-}
-
-function renderServiceTypes(element) {
-    var $ele = $(element);
-    $ele.empty();
-    $ele.append($('<option/>').val('0').text('Seleccione...'));
-    $.each(ServiceTypes, function (i, val) {
-        $ele.append($('<option/>').val(val.ServiceTypeId).text(val.Name));
-    })
-}
-
-//fetch Clothing Types
-function LoadClothingType(servicetypeDD, priceDD) {
-    $.ajax({
-        type : "GET",
-        url: "/Orders/getClothingTypes",
-        data: { 'ServiceTypeId': $(servicetypeDD).val() },
-        success: function (data) {
-            //render Clothing Types to appropiate Dropdown
-            renderClothingType($(servicetypeDD).parents('.mycontainer').find('select.clothingtype'), data);
-        },
-        error: function (error) {
-            console.log(error);
-        }
-    })
-}
-
-function renderClothingType(element, data) {
-    var $ele = $(element);
-    $ele.append($('<option/>').val('0').text('Seleccione...'));
-    $.each(data, function (i, val) {
-        $ele.append($('<option/>').val(val.ClothingTypeId).text(val.Name));
-
-    })
-}
-
-//fetch Price
-function LoadPrice(priceDD) {
-    $.ajax({
-        type: "GET",
-        url: "/Orders/getPrices",
-        data: { 'Price': $(priceDD).val() },
-        success: function (data) {
-            //render Prices according Clothin Type
-            var precio = document.getElementById('price');
-            $(precio) = data;
-        }
-    })
-}
-
-
+﻿
 
 $(document).ready(function () {
+    //Retrieve Clothing Types
+    $('#ServiceId').change(function () {
+        $('#ClothingId').empty();
+        $.ajax({
+            type: 'POST',
+            url: '/Orders/GetClothingTypesAsync',
+            dataType: 'json',
+            data: { serviceTypeId: $('#ServiceId').val() },
+            success: function (clothingTypes) {
+                $('#price').val('');
+                $('#ClothingId').append('<option value="0">Selecciona el tipo de prenda</option>');
+                $.each(clothingTypes, function (i, clothingType) {
+                    $('#ClothingId').append('<option value="'
+                        + clothingType.clothingTypeId + '">'
+                        + clothingType.name + '</option>');
+                });
+            },
+            error: function (ex) {
+                alert('Error al recuperar los tipos de prenda' + ex);
+            }
+        });
+        return false;
+    })
+
+    //Retrieve Price acoording to the Clothing Type
+    $('#ClothingId').change(function () {
+        $('#price').empty();
+        $.ajax({
+            type: 'POST',
+            url: '/Orders/GetPrice',
+            dataType: 'json',
+            data: { clothingType: $('#ClothingId option:selected').val() },
+            success: function (data) {
+                //render Prices according Clothin Type
+                if (data != null )
+                {
+                    var precio = data;
+                }
+                if (precio != null)
+                {
+                    $('#price').val(precio);
+                }
+            },
+            error: function (ex) {
+                alert('Error al recuperar precio' + ex);
+            }
+        });
+
+    })
+
+
+
     //Add button click event
     $('#add').click(function () {
         //validation and order items
@@ -103,22 +85,23 @@ $(document).ready(function () {
         }
 
         if (isAllValid) {
-            var $newRow = $('#mainrow').clone().removeAtrr('id');
-            $('.st', $newRow).val($('#servicetype').val());
-            $('.clothingtype', $newRow).val($('#clothingtype').val());
+            var $newRow = $('#mainrow').clone().removeAttr('id');
+            $('.st', $newRow).val($('#ServiceId').val());
+            $('.clothingtype', $newRow).val($('#ClothingId').val());
 
             //Replace add button with remove button
-            $('#add', $newRow).addClass('remove').val('Remove').removeClass('btnSuccess').addClass('btn-danger');
+            $('#add', $newRow).addClass('remove').val('Remove').removeClass('btnSuccess').addClass('btn btn-danger');
 
             //remove id attribute from new clone row
-            $('#servicetype,#clothingtype,#quantity,#price,#add', $newRow).removeAtrr('id');
+            $('#ServiceId,#ClothingId,#quantity,#price,#add', $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
 
             //append Clone Row
             $('#orderdetailsItems').append($newRow);
+            
 
             //clear select data
-            $('#servicetype,#clothingtype').val('0');
+            $('#ServiceId,#ClothingId').val('0');
             $('#quantity,#price').val('');
             $('orderItemError').empty();
         }
@@ -174,11 +157,11 @@ $(document).ready(function () {
             $(this).val('Please wait ...');
             $.ajax({
                 type: 'POST',
-                url: '/Orders/save',
+                url: '/Orders/Save',
                 data: JSON.stringify(data),
                 contentType: 'application/json',
                 success: function (data) {
-                    if (d.status) {
+                    if (data.status) {
                         ('Guardado con éxito');
                         //clear the form
                         list = [];
@@ -198,4 +181,3 @@ $(document).ready(function () {
     });
 });
 
-LoadService($('#servicetype'));

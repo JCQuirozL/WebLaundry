@@ -28,7 +28,7 @@ namespace WebLaundry.Models
         public string? Phone { get; set; }
 
 
-
+        [DataType(DataType.EmailAddress)]
         public string? Email { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }

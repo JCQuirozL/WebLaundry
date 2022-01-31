@@ -1,82 +1,108 @@
 ﻿@model WebLaundry.Models.Order
-
 @{
-	ViewBag.Title = "Nueva Orden";
+	ViewBag.Title = "Órden";
 }
 
-<div class="content-wrapper">
-	<div class="content-header">
-		  <div class="container-fluid">
-			<div class="row mb-2">
-			  <div class="col-sm-6 ">
-					<h2>@ViewBag.Title</h2>
-			  </div>
-			</div>
-		  </div>
-	</div>
 
+	<div class="container">
+	<form method="post">
+		<div asp-validation-summary="ModelOnly"></div><br />
 		
-		 <div class="content">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="form-group col-lg-3">
-						@using (Html.BeginForm("Create","Orders", FormMethod.Get))
-						{
-							<input  disabled id="createdateid"  value="@DateTime.Now.ToShortDateString()" /><br /><br />
-					
-							<label>Cliente</label>
-							@Html.DropDownListFor(m => m.CustomerId, new SelectList(ViewBag.Customers, "CustomerId","Name",3), "Seleccionar", new {@class="form-control", @id="customerid"})
-							
-							<span asp-validation-for="CustomerId" class="text-danger"></span><br />
-
-							<label>Estatus</label>
-							@Html.DropDownListFor(m => m.StatusId, new SelectList(ViewBag.Status, "id","name",1), "Seleccionar", new { @class="form-control", @id="statusid", @disabled="disabled"})
-							<span asp-validation-for="StatusId" class="text-danger"></span><br />
-
-							<label>Observaciones</label>
-							<input asp-for="Annotations" id="annotationsid" class="form-control" placeholder="Observaciones" />
-						   <span asp-validation-for="Annotations" class="text-danger"></span><br />
-					
-					<div class="container">
-						 
-							 <div class="form-inline ">
-									<div class="form-group">
-											
-																				
-											<label>Tipo de Prenda:</label>
-													<div class="input-group p-2">								
-														@Html.DropDownListFor(m => m.ClothingId, new SelectList(ViewBag.ClothingType, "id","name","price"), "Seleccionar", new { @class="form-control", @id="clothingid"})
-														<span asp-validation-for="ClothingId" class="text-danger"></span><br />
-													</div>
-
-											<label>Precio:</label>	
-												<div class="input-group p-2">
-													<input asp-for="Price" class="form-control" readonly id="priceid">
-												</div>
-
-											
-											<label>Cantidad:</label>
-												<div class="input-group p-2">								
-														<input asp-for="Quantity" class="form-control" placeholder="Kg.">
-														<span asp-validation-for="Quantity" class="text-danger" ></span><br />
-												</div>
-									</div>
-							</div>
-												
-									
-							</div>
-					
-					
-						
-						
-						
-					
-						}
-					</div>
-				</div>
-			</div>
-		</div>
-
+		<div class="master">
+			<h2>@ViewBag.Title</h2>
+			<table class="table table-responsive">
 	
-</div>	
-		
+				<tr>
+					@*<td>Orden No.</td>
+					<td>
+						<input type="hidden" asp-for=OrderId id="orderNo" class="form-control" readonly />
+						<span asp-validation-for="OrderId" class="text-danger"></span>
+					</td>*@
+					<td>Fecha de creación</td>
+					<td>
+						<input type="date" asp-for="CreateDate" readonly  class="form-control" />
+						
+					</td>
+				</tr>
+				<tr>
+					<td>Observaciones</td>
+					<td colspan="3">
+						<textarea asp-for="Annotations" id="description" class="form-control"></textarea>
+					</td>	
+				</tr>
+			</table>
+		<coloriv class="details">
+			<h2>Servicios agregados</h2>
+			<table class="table table-responsive">
+				
+				<tr class="mycontainer" id="mainrow">
+					<td>
+						<label asp-for="ServiceId" class="control-label"></label>
+						<select asp-for="ServiceId" asp-items="Model.ServiceTypes" class="form-control st error" id="ServiceId"></select>
+						<span asp-validation-for="ServiceId" class="text-danger"></span>
+					</td>
+					<td>
+						<label asp-for="ClothingId" class="control-label" ></label>
+						<select asp-for="ClothingId" asp-items="Model.ClothingTypes" class="form-control clothingtype error " id="ClothingId"></select>
+						<span asp-validation-for="ClothingId" class="text-danger"></span>
+					</td>
+					<td>
+						<label asp-for="Price" class="control-label">Precio</label>
+						<input asp-for="Price" id="price" class="form-control error" readonly />
+						<span asp-validation-for="Price" class="text-warning"></span>
+					</td>
+					<td>
+						<label asp-for="Quantity" class="control-label"></label>
+						<input asp-for="Quantity" id="quantity" class="form-control error"/>
+						<span asp-validation-for="Quantity" class="text-warning"></span>
+					</td>
+					<td>
+						<label asp-for="Iva" class="control-label"></label>
+						<input asp-for="Iva" id="iva" class="form-control error" readonly/>
+						<span asp-validation-for="Iva" class="text-warning"></span>
+					</td>
+					<td>
+						<label asp-for="Subtotal" class="control-label"></label>
+						<input asp-for="Subtotal" id="subtotal" class="form-control error" readonly/>
+						<span asp-validation-for="Subtotal" class="text-warning"></span>
+					</td>
+					<td>
+						<label asp-for="Total" class="control-label"></label>
+						<input asp-for="Total" id="total" class="form-control error" readonly/>
+						<span asp-validation-for="Total" class="text-warning"></span>
+					</td>
+
+					<td>
+						<input type="button" id="add" value="Agregar" style="width:80px;" class="btn btn-success" />
+					</td>
+
+				</tr>
+			</table>
+			<div id="orderitems">
+				<table class="table table-responsive" id="orderdetailsItems"></table>
+				<span class="orderItemError" style="color:red;"></span>
+			</div>
+			<div style="padding:10px 0; text-align:right;">
+				<input id="submit" type="button" value="Guardar órden" class="btn btn-warning" style="padding:10px 20px;" />
+			</div>
+	</form>
+
+		</div>	
+	</div>
+	
+	
+	
+	<script src="~/js/site.js"></script>
+	
+	<style>
+		span.error{
+			display:block;
+			visibility:hidden;
+			color:red;
+			font-size:90%;
+		}
+		tr.error{
+			background-color:rgba(255,0,0,0.35);
+		}
+	</style>
+	

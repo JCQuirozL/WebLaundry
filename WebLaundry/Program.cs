@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebLaundry.Data;
 using WebLaundry.Models;
+using WebLaundry.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<laundryContext>();
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IServiceTypeRepository, ServiceTypeRepository>();
 
 var app = builder.Build();
 

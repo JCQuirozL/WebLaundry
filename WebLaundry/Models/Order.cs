@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,12 +14,38 @@ namespace WebLaundry.Models
         }
 
         public long OrderId { get; set; }
-        public DateTime? CreateDate { get; set; }
+
+        public DateTime? CreateDate
+        {
+            get
+            {
+                return this.createDate.HasValue
+                    ? this.createDate.Value
+                    : DateTime.Now;
+            }
+
+            set { this.createDate = value; }
+        }
+
+        public DateTime? createDate = null;
         public DateTime? PayDate { get; set; }
         public DateTime? StatusChangeDate { get; set; }
         public string? Annotations { get; set; }
         public decimal? Subtotal { get; set; }
-        public decimal? Iva { get; set; }
+
+
+        public decimal? Iva
+        {
+            get
+            {
+                return this.iva.HasValue
+                    ? this.iva.Value
+                    : Convert.ToDecimal(1.16);
+            }
+
+            set { this.iva = value; }
+        }
+        public decimal? iva { get; set; }
         public decimal? Total { get; set; }
         public int? StatusId { get; set; }
         public long? CustomerId { get; set; }
@@ -27,8 +54,25 @@ namespace WebLaundry.Models
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18, 2)")]
         public decimal? Price { get; set; }
-        public int? ClothingId { get; set; }
 
+        [Required(ErrorMessage = "Debe seleccionar un tipo de prenda")]
+        [Display(Name = "Tipo de Prenda")]
+        public int ClothingId { get; set; }
+
+        [NotMapped]
+        public IEnumerable<SelectListItem> ClothingTypes { get; set; }
+
+
+        [Required(ErrorMessage = "Debe seleccionar un tipo de servicio")]
+        [Display(Name = "Tipo de Servicio")]
+        public int ServiceId { get; set; }
+
+        [NotMapped]
+        public IEnumerable<SelectListItem> ServiceTypes { get; set; }
+
+
+        [Required(ErrorMessage = "La cantidad es requerida")]
+        [Display(Name = "Cantidad")]
         public decimal? Quantity { get; set; }
 
         public virtual Customer? Customer { get; set; }
