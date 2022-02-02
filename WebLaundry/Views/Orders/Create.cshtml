@@ -3,7 +3,8 @@
 	ViewBag.Title = "Órden";
 }
 
-
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
 	<div class="container">
 	<form method="post">
 		<div asp-validation-summary="ModelOnly"></div><br />
@@ -13,11 +14,11 @@
 			<table class="table table-responsive">
 	
 				<tr>
-					@*<td>Orden No.</td>
+					@*<td>Orden No.</td>*@
 					<td>
 						<input type="hidden" asp-for=OrderId id="orderNo" class="form-control" readonly />
 						<span asp-validation-for="OrderId" class="text-danger"></span>
-					</td>*@
+					</td>
 					<td>Fecha de creación</td>
 					<td>
 						<input type="date" asp-for="CreateDate" readonly  class="form-control" />
@@ -53,7 +54,7 @@
 					</td>
 					<td>
 						<label asp-for="Quantity" class="control-label"></label>
-						<input asp-for="Quantity" id="quantity" class="form-control error"/>
+						<input asp-for="Quantity" id="quantity" class="form-control error" oninput=calculateTotals()/>
 						<span asp-validation-for="Quantity" class="text-warning"></span>
 					</td>
 					<td>
@@ -90,7 +91,7 @@
 		</div>	
 	</div>
 	
-	
+</div>	
 	
 	<script src="~/js/site.js"></script>
 	

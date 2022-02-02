@@ -1,6 +1,10 @@
 ﻿
 
 $(document).ready(function () {
+    $('#ServiceId,#ClothingId,#subtotal,#total').val('0');
+    $('#quantity,#price').val('');
+    $('orderItemError').empty();
+
     //Retrieve Clothing Types
     $('#ServiceId').change(function () {
         $('#ClothingId').empty();
@@ -43,6 +47,11 @@ $(document).ready(function () {
                 if (precio != null)
                 {
                     $('#price').val(precio);
+                    subtotal = ($('#price').val() * $('#quantity').val()) / $('#iva').val();
+                    $('#subtotal').val(parseFloat(subtotal.toFixed(2)));
+                    var total = ($('#subtotal').val() * $('#iva').val());
+                    $('#total').val(parseFloat(total.toFixed(1)));
+                    console.log(total);
                 }
             },
             error: function (ex) {
@@ -51,21 +60,6 @@ $(document).ready(function () {
         });
 
     })
-
-    //Calculate Subtotal
-    $('#quantity').change(function () {
-        subtotal = ($('#price').val() * $('#quantity').val()) / $('#iva').val();
-        $('#subtotal').val(parseFloat(subtotal.toFixed(2)));
-        console.log(subtotal);
-    });
-
-    //Calculate Total
-    $('#quantity').change(function () {
-        var total = ($('#subtotal').val() * $('#iva').val());
-        $('#total').val(parseFloat(total.toFixed(1)));
-        console.log(total);
-    });
-
 
     //Add button click event
     $('#add').click(function () {
@@ -104,10 +98,10 @@ $(document).ready(function () {
             $('.clothingtype', $newRow).val($('#ClothingId').val());
 
             //Replace add button with remove button
-            $('#add', $newRow).addClass('remove').val('Remove').removeClass('btnSuccess').addClass('btn btn-danger');
+            $('#add', $newRow).addClass('remove').val('Quitar').removeClass('btnSuccess').addClass("btn btn-danger text-black");
 
             //remove id attribute from new clone row
-            $('#ServiceId,#ClothingId,#quantity,#price,#add', $newRow).removeAttr('id');
+            $('#ServiceId,#ClothingId,#quantity,#price,#add,#subtotal,#total', $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
 
             //append Clone Row
@@ -115,7 +109,7 @@ $(document).ready(function () {
             
 
             //clear select data
-            $('#ServiceId,#ClothingId').val('0');
+            $('#ServiceId,#ClothingId,#subtotal,#total').val('0');
             $('#quantity,#price').val('');
             $('orderItemError').empty();
         }
@@ -194,4 +188,15 @@ $(document).ready(function () {
         }
     });
 });
+
+function calculateTotals() {
+    subtotal = ($('#price').val() * $('#quantity').val()) / $('#iva').val();
+    $('#subtotal').val(parseFloat(subtotal.toFixed(2)));
+    console.log(subtotal);
+
+    var total = ($('#subtotal').val() * $('#iva').val());
+    $('#total').val(parseFloat(total.toFixed(1)));
+    console.log(total);
+
+}
 
