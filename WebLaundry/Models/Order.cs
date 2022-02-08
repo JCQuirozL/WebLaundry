@@ -53,6 +53,7 @@ namespace WebLaundry.Models
 
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Precio")]
         public decimal? Price { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar un tipo de prenda")]

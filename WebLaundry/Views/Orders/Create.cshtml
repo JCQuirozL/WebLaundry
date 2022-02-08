@@ -34,7 +34,7 @@
 			</table>
 		<coloriv class="details">
 			<h2>Servicios agregados</h2>
-			<table class="table table-responsive">
+			<table class="table table-responsive" id = "lista">
 				
 				<tr class="mycontainer" id="mainrow">
 					<td>
@@ -76,24 +76,52 @@
 					<td>
 						<input type="button" id="add" value="Agregar" style="width:80px;" class="btn btn-success" />
 					</td>
+					
 
 				</tr>
+				<tr>
+					<td>
+						<label asp-for="ClothingId" class="control-label" ></label>
+					</td>
+					<td>
+						<label asp-for="Quantity" class="control-label" ></label>
+					</td>
+					<td>
+						<label asp-for="Price" class="control-label" ></label>
+					</td>
+					<td>
+						<label asp-for="Subtotal" class="control-label" ></label>
+					</td>
+					<td>
+						<label asp-for="Total" class="control-label" ></label>
+					</td>
+					
+				</tr>
+				
 			</table>
+
 			<div id="orderitems">
-				<table class="table table-responsive" id="orderdetailsItems"></table>
+				<table class="table table-responsive" id="orderdetailsItems">
+					
+
+				</table>
 				<span class="orderItemError" style="color:red;"></span>
-			</div>
-			<div style="padding:10px 0; text-align:right;">
+				
+				<div style="padding:10px 0; text-align:right;">
+					<div class = "col-10 text-right" style = "font-weight: bold;font-size:18px; color:seagreen;"id = "topay"></div>
 				<input id="submit" type="button" value="Guardar órden" class="btn btn-warning" style="padding:10px 20px;" />
 			</div>
+
+			
+		</div>
 	</form>
 
 		</div>	
 	</div>
 	
-</div>	
 	
-	<script src="~/js/site.js"></script>
+	
+	<script src="~/js/site2.js"></script>
 	
 	<style>
 		span.error{

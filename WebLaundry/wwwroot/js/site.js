@@ -138,13 +138,20 @@ $(document).ready(function () {
                 var total = (parseFloat($('.quantity', this).val())) * (parseFloat($('.price', this).val()));
 
                 var orderItem = {
-                    ClothingTypeId: $('select.clothingtype', this).val(),
-                    Quantity: parseFloat($('.quantity', this).val()),
-                    Total: total
+                    //ClothingTypeId: $('select.clothingtype', this).val(),
+                    //Quantity: parseFloat($('.quantity', this).val()),
+                    //Total: total
                 }
-                list.push(orderItem);
+                list.push(
+                    {
+                        "ClothingTypeId": $('select.clothingtype').value,
+                        "Quantity": parseFloat($('.quantity').value),
+                        "Total": total
+                    }
+                );
             }
         })
+        console.log(list);
         if (errorItemCount > 0) {
             $('#orderItemError').text(errorItemCount + "valor no válido en la lista");
             isAllValid = false;
