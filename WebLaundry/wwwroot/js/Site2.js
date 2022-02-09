@@ -87,20 +87,24 @@ function agregar() {
 
     console.log(total);
 
-    //agregar detalle al array
-    data.push({
-        "clothingtype": clothingtype,
-        "quantity": parseFloat(quantity),
-        "total":parseFloat(total)
-    });
-    var row = 'row' + cant;
-    var fila = '<tr id=' + row + '><td>' + clothingtype + '</td><td>' + quantity + '</td><td>' + price + '</td><td>' + subtotal + '</td><td>'+ total + '</td><td></td><td> <a href="#" class="btn btn-danger" onclick="eliminar"(' + cant + ')";>Eliminar</a></td></tr >';
+   
 
     if ($("#ServiceId").val() == 0 || $("#ClothingId").val() == 0 || $("#quantity").val() == 0)
     {
         alert("Campos requeridos, favor de verificar");
         return;
     }
+
+    //agregar detalle al array
+    data.push({
+        "id":cant,
+        "clothingtype": clothingtype,
+        "quantity": parseFloat(quantity),
+        "total": parseFloat(total)
+    });
+    console.log(data);
+    var row = 'row' + cant;
+    var fila = '<tr id=' + row + '><td>' + clothingtype + '</td><td>' + quantity + '</td><td>' + price + '</td><td>' + subtotal + '</td><td>' + parseFloat(total) + '</td><td></td><td> <a class="btn btn-danger" onclick="eliminar('+cant+')">Eliminar</a></td></tr >';
     //agregar a la table
     $("#lista").append(fila);
     $("#ClothingId").val('');
@@ -115,7 +119,23 @@ function sumar() {
     for (x of data) {
         tot = tot + x.total;
     }
+   
     document.getElementById('topay').innerHTML = "Cobrar: $" + parseFloat(tot);
+}
+
+function eliminar(row) {
+    //eliminar la fila actual
+    $("#row" + row).remove();
+    var i = 0;
+    var pos = 0;
+    for (x of data) {
+        if (x.id == row) {
+            pos = i;
+        }
+        i++;
+    }
+    data.splice(pos, 1);
+    sumar();
 }
 
 function save() {

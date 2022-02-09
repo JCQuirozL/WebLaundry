@@ -87,7 +87,7 @@ namespace WebLaundry.Controllers
 
                 ViewBag.Customers = _context.Customers.Select(c => new {CustomerId = c.CustomerId, Name = c.Name}).ToList();
             
-                ViewBag.Status = _context.OrderStatuses.Select(s => new { id = s.StatusId, name = s.Name }).ToList();
+                ViewBag.Status = _context.OrderStatuses.Select(s => new { StatusId = s.StatusId, Name = s.Name }).ToList();
 
             if (id == null)
             {

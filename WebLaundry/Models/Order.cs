@@ -30,7 +30,11 @@ namespace WebLaundry.Models
         public DateTime? createDate = null;
         public DateTime? PayDate { get; set; }
         public DateTime? StatusChangeDate { get; set; }
+
+
+        [Display(Name = "Observaciones")]
         public string? Annotations { get; set; }
+
         public decimal? Subtotal { get; set; }
 
 
@@ -47,7 +51,11 @@ namespace WebLaundry.Models
         }
         public decimal? iva { get; set; }
         public decimal? Total { get; set; }
+
+        [Display(Name = "Estado de la órden:")]
         public int? StatusId { get; set; }
+
+        [Display(Name = "Cliente")]
         public long? CustomerId { get; set; }
         public int? UserId { get; set; }
 

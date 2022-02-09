@@ -26,11 +26,29 @@
 					</td>
 				</tr>
 				<tr>
-					<td>Observaciones</td>
+					<td><label asp-for="Annotations" class="control-label"></label></td>
 					<td colspan="3">
 						<textarea asp-for="Annotations" id="description" class="form-control"></textarea>
 					</td>	
 				</tr>
+				<tr>
+					<td>
+						
+					</td>
+					<td>
+						<label asp-for ="CustomerId" class ="control-label"></label>
+						@Html.DropDownListFor(m=>m.CustomerId, new SelectList(ViewBag.Customers, "CustomerId", "Name",2), "Seleccione...", new { @class="form-control", @id="customerid"})
+					</td>
+					<td>
+						
+					</td>
+					<td>
+						<label asp-for ="StatusId" class ="control-label"></label>
+						@Html.DropDownListFor(m=>m.StatusId, new SelectList(ViewBag.Status, "StatusId", "Name",1), "Seleccione...", new { @class="form-control ", @id="statusid", disabled = "disabled"})
+					</td>
+				</tr>
+				
+          
 			</table>
 		<coloriv class="details">
 			<h2>Servicios agregados</h2>
